@@ -15,23 +15,13 @@ def black_scholes_nn(S, K, r, q, T, sigma):
 
     # Define neural network architecture
     model = Sequential()
-    model.add(Dense(units=10, activation='relu', input_shape=(5,)))
+    model.add(Dense(units=10, activation='relu'))
     model.add(Dense(units=10, activation='relu'))
     model.add(Dense(units=1, activation=None))
 
     # Compile model
     model.compile(loss='mse', optimizer='adam')
-
-    # Train model
-    model.fit(x_train, np.array([black_scholes_call_price(S, K, r, q, T, sigma)]),
-              epochs=200, batch_size=256, verbose=0)
     return model
-
-def predict_price(model, S, K, r, q, T, sigma):
-    input_data = np.array(
-        [[np.log(S / K) / (sigma * np.sqrt(T)) + (r - q + sigma ** 2 / 2) * T / (sigma * np.sqrt(T))]])
-    input_data = input_data.reshape((1, 1))  # Reshape the input data to (batch_size, input_dim)
-    return model.predict(input_data)[0][0]
 
 
 # Define option parameters
